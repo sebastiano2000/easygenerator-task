@@ -5,6 +5,7 @@ import { useState } from "react";
 import { Input } from "../components/ui/input";
 import { Button } from "../components/ui/button";
 import { Card, CardContent } from "../components/ui/card";
+import axios from "axios";
 
 const signInSchema = z.object({
   email: z.string().email("Invalid email format"),
@@ -27,14 +28,22 @@ const SignIn = () => {
   const onSubmit = async (data: SignInFormValues) => {
     setLoading(true);
     try {
-      console.log("Sign in successful", data);
-      // TODO: Implement API call for sign in
-    } catch (error) {
+      // Call the sign-in API endpoint
+      const response = await axios.post("http://localhost:5000/auth/signin", data, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      
+      console.log("Sign in successful", response.data);
+      const token = response.data.access_token;
+      localStorage.setItem("access_token", token);
+    } catch (error: any) {
       console.error("Sign in error", error);
     } finally {
       setLoading(false);
     }
-  };
+  };  
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">

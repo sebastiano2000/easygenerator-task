@@ -5,6 +5,7 @@ import { useState } from "react";
 import { Button } from "../components/ui/button";
 import { Card, CardContent } from "../components/ui/card";
 import { Input } from "../components/ui/input";
+import axios from "axios";
 
 const signUpSchema = z.object({
   email: z.string().email("Invalid email format"),
@@ -33,8 +34,11 @@ const SignUp = () => {
   const onSubmit = async (data: SignUpFormValues) => {
     setLoading(true);
     try {
-      console.log("Sign-up successful", data);
-      // TODO: Implement API call to backend
+      const response = await axios.post("http://localhost:5000/auth/signup", data, {
+        headers: { "Content-Type": "application/json" },
+      });
+
+      console.log("Sign-up successful", response.data);
     } catch (error) {
       console.error("Sign-up error", error);
     } finally {

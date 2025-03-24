@@ -6,6 +6,7 @@ const ApplicationPage = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
+    localStorage.removeItem("access_token");
     console.log("User logged out");
     navigate("/signin");
   };
